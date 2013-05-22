@@ -4,6 +4,9 @@ import org.json.JSONObject;
 
 import com.deerandcatgames.utils.GoogleAchivements.AchivementDefinition.AchivementStates;
 import com.deerandcatgames.utils.GoogleAchivements.AchivementDefinition.AchivementTypes;
+import com.deerandcatgames.utils.GoogleAchivements.tasks.AchivementIncrementTask;
+import com.deerandcatgames.utils.GoogleAchivements.tasks.AchivementRevealTask;
+import com.deerandcatgames.utils.GoogleAchivements.tasks.AchivementUnlockTask;
 
 /**
  * Players Achivement information
@@ -99,5 +102,52 @@ public class Achivement {
 			builder.append(String.format("formattedCurrentSteps: %s\r\n", this.getFormattedCurrentSteps()));
 		}
 		return builder.toString();
+	}
+	
+	/**
+	 * Increments the achivement properly
+	 * @param steps Number of steps to increment by
+	 */
+	public void increment(int steps)
+	{
+		AchivementIncrementTask task=new AchivementIncrementTask(this);
+		task.execute(steps);
+	}
+	
+	/**
+	 * Reveals the achivement Does nothing if allready revealed or unlocked
+	 */
+	public void reveal()
+	{
+		if(getAchivementState()!=AchivementStates.HIDDEN)
+			return;
+		AchivementRevealTask task=new AchivementRevealTask(this);
+		task.execute();
+	}
+	
+	public void unlock()
+	{
+		if(getAchivementState()==AchivementStates.UNLOCKED)
+			return;
+		AchivementUnlockTask task=new AchivementUnlockTask(this);
+		task.execute();
+	}
+	/**
+	 * @param currentSteps the currentSteps to set
+	 */
+	public void setCurrentSteps(Integer currentSteps) {
+		this.currentSteps = currentSteps;
+	}
+	/**
+	 * @param formattedCurrentSteps the formattedCurrentSteps to set
+	 */
+	public void setFormattedCurrentSteps(String formattedCurrentSteps) {
+		this.formattedCurrentSteps = formattedCurrentSteps;
+	}
+	/**
+	 * @param achivementState the achivementState to set
+	 */
+	public void setAchivementState(AchivementStates achivementState) {
+		this.achivementState = achivementState;
 	}
 }

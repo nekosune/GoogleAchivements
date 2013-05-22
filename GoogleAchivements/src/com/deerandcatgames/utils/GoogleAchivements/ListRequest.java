@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.scribe.model.Verb;
 
 public class ListRequest extends Request {
 
@@ -13,6 +14,9 @@ public class ListRequest extends Request {
 		super(request, data);
 	}
 
+	public ListRequest(String request, Map<String, String> data,Verb verb) {
+		super(request, data,verb);
+	}
 	@Override
 	public JSONObject Execute() throws JSONException {
 		// TODO Auto-generated method stub

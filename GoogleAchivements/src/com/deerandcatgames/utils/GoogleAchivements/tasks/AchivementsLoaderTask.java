@@ -7,9 +7,11 @@ import java.util.HashMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.scribe.model.Verb;
 
 import com.deerandcatgames.utils.GoogleAchivements.AchivementList;
 import com.deerandcatgames.utils.GoogleAchivements.ListRequest;
+import com.deerandcatgames.utils.GoogleAchivements.Request;
 import com.deerandcatgames.utils.GoogleAchivements.callbacks.AchivementsLoadedCallback;
 
 import android.os.AsyncTask;
@@ -46,7 +48,7 @@ public class AchivementsLoaderTask extends AsyncTask<String, Void, Void> {
 		options.put("playerId", id);
 		JSONObject obj2;
 		try {
-			obj2 = new ListRequest(String.format("players/%s/achievements",id), options).Execute();
+			obj2 = new Request(String.format("players/%s/achievements",id,Verb.POST), options).Execute();
 			list.Load(obj2);
 			callback.OnLoadComplete(list, id);
 		} catch (Exception e) {

@@ -11,6 +11,7 @@ import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
 import com.deerandcatgames.utils.GoogleAchivements.callbacks.AchivementDefinitionCallback;
+import com.deerandcatgames.utils.GoogleAchivements.callbacks.AchivementStatusChange;
 import com.deerandcatgames.utils.GoogleAchivements.callbacks.AchivementsLoadedCallback;
 import com.deerandcatgames.utils.GoogleAchivements.callbacks.LoginCompleteCallback;
 import com.deerandcatgames.utils.GoogleAchivements.tasks.AchivementDefinitionsLoaderTask;
@@ -36,6 +37,50 @@ public class GoogleAchivements {
 	public Token AccessToken;
 	public AchivementList playerAchivements;
 	
+	private AchivementStatusChange AchivementCallback;
+	
+	/**
+	 * @return the accessToken
+	 */
+	public Token getAccessToken() {
+		return AccessToken;
+	}
+
+	/**
+	 * @param accessToken the accessToken to set
+	 */
+	public void setAccessToken(Token accessToken) {
+		AccessToken = accessToken;
+	}
+
+	/**
+	 * @return the playerAchivements
+	 */
+	public AchivementList getPlayerAchivements() {
+		return playerAchivements;
+	}
+
+	/**
+	 * @param playerAchivements the playerAchivements to set
+	 */
+	public void setPlayerAchivements(AchivementList playerAchivements) {
+		this.playerAchivements = playerAchivements;
+	}
+
+	/**
+	 * @return the achivementCallback
+	 */
+	public AchivementStatusChange getAchivementCallback() {
+		return AchivementCallback;
+	}
+
+	/**
+	 * @param achivementCallback the achivementCallback to set
+	 */
+	public void setAchivementCallback(AchivementStatusChange achivementCallback) {
+		AchivementCallback = achivementCallback;
+	}
+
 	public void Initialize(String ClientID,String secret,String callbackUrl) throws Exception
 	{
 		String scope="https://www.googleapis.com/auth/games https://www.googleapis.com/auth/appstate";
@@ -131,4 +176,8 @@ public class GoogleAchivements {
 		return true;
 	}
 	
+	public Achivement getAchivement(String id)
+	{
+		return playerAchivements.get(id);
+	}
 }
