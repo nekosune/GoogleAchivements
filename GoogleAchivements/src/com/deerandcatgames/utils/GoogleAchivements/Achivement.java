@@ -59,7 +59,7 @@ public class Achivement {
 			throw new IllegalArgumentException("obj is not a google json response");
 	
 		if(!obj.getString("kind").equalsIgnoreCase(KIND))
-			throw new IllegalArgumentException("obj is not a AchivementDefinition");
+			throw new IllegalArgumentException("obj is not a Achivement");
 		String id=obj.getString("id");
 		AchivementDefinition aDef=AchivementDefinitionList.getInstance().get(id);
 		if(aDef==null)

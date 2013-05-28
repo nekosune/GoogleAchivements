@@ -1,6 +1,7 @@
 package com.deerandcatgames.utils.GoogleAchivements;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,8 +15,10 @@ import com.deerandcatgames.utils.GoogleAchivements.callbacks.AchivementDefinitio
 import com.deerandcatgames.utils.GoogleAchivements.callbacks.AchivementStatusChange;
 import com.deerandcatgames.utils.GoogleAchivements.callbacks.AchivementsLoadedCallback;
 import com.deerandcatgames.utils.GoogleAchivements.callbacks.LoginCompleteCallback;
+import com.deerandcatgames.utils.GoogleAchivements.callbacks.PlayerLoadedCallback;
 import com.deerandcatgames.utils.GoogleAchivements.tasks.AchivementDefinitionsLoaderTask;
 import com.deerandcatgames.utils.GoogleAchivements.tasks.AchivementsLoaderTask;
+import com.deerandcatgames.utils.GoogleAchivements.tasks.PlayerLoadTask;
 
 import android.util.Log;
 
@@ -131,32 +134,16 @@ public class GoogleAchivements {
 	}
 	public void Test()
 	{
-		HashMap<String, String> options=new HashMap<String, String>();
-		//options.put("maxResults", "1");
+		
+		Map<String,String> options=new HashMap<String, String>();
+		JSONObject obj;
 		try {
-			JSONObject obj=new ListRequest("achievements", options).Execute();
-			Log.i("Results",obj.toString());
-			
-			AchivementDefinitionList.getInstance().Load(obj);
-			for(AchivementDefinition aDef:AchivementDefinitionList.getInstance().values())
-			{
-				Log.i("Results",aDef.toString());
-			}
-			AchivementList list=new AchivementList();
-			options.put("playerId", "me");
-			JSONObject obj2=new ListRequest("players/me/achievements", options).Execute();
-			//Log.i("Results",obj2.toString());
-			list.Load(obj2);
-			for(Achivement ach:list.values())
-			{
-				Log.i("Results", ach.toString());
-			}
-			Log.i("Results", AchivementDefinitionList.getInstance().toString());
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			obj = new ListRequest("leaderboards", options).Execute();
+			Log.i("LoggingTest",obj.toString());
+			LeaderboardDefinitionList.getInstance().Load(obj);
+			for(LeaderboardDefinition def:LeaderboardDefinitionList.getInstance().values())
+				Log.i("LoggingTest",def.toString());
+		}  catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -179,5 +166,11 @@ public class GoogleAchivements {
 	public Achivement getAchivement(String id)
 	{
 		return playerAchivements.get(id);
+	}
+	
+	public void GetPlayer(String id,PlayerLoadedCallback callback)
+	{
+		PlayerLoadTask task=new PlayerLoadTask(callback);
+		task.execute();
 	}
 }
