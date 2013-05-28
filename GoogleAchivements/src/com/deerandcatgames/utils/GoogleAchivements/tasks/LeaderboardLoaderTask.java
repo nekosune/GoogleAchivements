@@ -12,7 +12,7 @@ import com.deerandcatgames.utils.GoogleAchivements.callbacks.LeaderboardLoadedCa
 
 import android.os.AsyncTask;
 
-public class LeaderboardLoaderTask extends AsyncTask<String, Void, Void> {
+public class LeaderboardLoaderTask extends AsyncTask<String, Void, Leaderboard> {
 
 	
 	
@@ -22,10 +22,13 @@ public class LeaderboardLoaderTask extends AsyncTask<String, Void, Void> {
 	{
 		callback=cll;
 	}
+	
+	public LeaderboardLoaderTask()
+	{
+		callback=null;
+	}
 	@Override
-	protected Void doInBackground(String... params) {
-		if(callback==null)
-			throw new IllegalArgumentException("Callback may not be null");
+	protected Leaderboard doInBackground(String... params) {
 		if(params.length<4)
 			throw new IllegalArgumentException("Need all three params");
 		String id=params[0];
@@ -46,9 +49,12 @@ public class LeaderboardLoaderTask extends AsyncTask<String, Void, Void> {
 		try {
 			obj2 = new Request(String.format(url,id,Social), options,Verb.GET).Execute();
 			leader.Load(obj2);
-			callback.Loaded(leader);
+			if(callback!=null)
+				callback.Loaded(leader);
+			return leader;
 		} catch (Exception e) {
-			callback.onError(e);
+			if(callback!=null)
+				callback.onError(e);
 		}
 		return null;
 	}

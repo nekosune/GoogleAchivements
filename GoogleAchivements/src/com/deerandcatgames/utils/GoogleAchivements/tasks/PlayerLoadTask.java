@@ -18,7 +18,7 @@ import android.os.AsyncTask;
  * @author Katrina
  *
  */
-public class PlayerLoadTask extends AsyncTask<String, Void, Void> {
+public class PlayerLoadTask extends AsyncTask<String, Void, Player> {
 
 	
 	public PlayerLoadedCallback callback;
@@ -27,14 +27,16 @@ public class PlayerLoadTask extends AsyncTask<String, Void, Void> {
 	{
 		callback=call;
 	}
-	
+	public PlayerLoadTask()
+	{
+		callback=null;
+	}
 	/* (non-Javadoc)
 	 * @see android.os.AsyncTask#doInBackground(Params[])
 	 */
 	@Override
-	protected Void doInBackground(String... params) {
-		if(callback==null)
-			throw new IllegalArgumentException("Callback may not be null");
+	protected Player doInBackground(String... params) {
+		
 		String id=(params.length>0)?params[0]:"me";
 		HashMap<String, String> options=new HashMap<String, String>();
 		Player player=new Player();
@@ -43,9 +45,12 @@ public class PlayerLoadTask extends AsyncTask<String, Void, Void> {
 		try {
 			obj2 = new Request(String.format("players/%s",id,Verb.GET), options).Execute();
 			player.Load(obj2);
-			callback.OnLoadComplete(player);
+			if(callback!=null)
+				callback.OnLoadComplete(player);
+			return player;
 		} catch (Exception e) {
-			callback.OnError(e);
+			if(callback!=null)
+				callback.OnError(e);
 		}
 		return null;
 	}

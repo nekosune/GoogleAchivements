@@ -34,7 +34,8 @@ public class AchivementRevealTask extends AsyncTask<Void, Void, Void> {
 				String state=obj2.getString("currentState");
 				if(state.equalsIgnoreCase("REVEALED"))
 				{
-					GoogleAchivements.getInstance().getAchivementCallback().AchivementRevealed(achivement);
+					if(GoogleAchivements.getInstance().getAchivementCallback()!=null)
+						GoogleAchivements.getInstance().getAchivementCallback().AchivementRevealed(achivement);
 				}
 			}
 			

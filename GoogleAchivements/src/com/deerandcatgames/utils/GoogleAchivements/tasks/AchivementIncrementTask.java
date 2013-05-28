@@ -38,7 +38,8 @@ public class AchivementIncrementTask extends AsyncTask<Integer, Void, Void> {
 				if(unlocked)
 				{
 					achivement.setAchivementState(AchivementStates.UNLOCKED);
-					GoogleAchivements.getInstance().getAchivementCallback().AchivementUnlocked(achivement);
+					if(GoogleAchivements.getInstance().getAchivementCallback()!=null)
+						GoogleAchivements.getInstance().getAchivementCallback().AchivementUnlocked(achivement);
 					return null;
 				}
 			}
@@ -49,7 +50,8 @@ public class AchivementIncrementTask extends AsyncTask<Integer, Void, Void> {
 				achivement.setCurrentSteps(obj2.getInt("currentSteps"));
 				if(cur!=achivement.getCurrentSteps())
 				{
-					GoogleAchivements.getInstance().getAchivementCallback().AchivementSteps(achivement,achivement.getCurrentSteps()-cur);
+					if(GoogleAchivements.getInstance().getAchivementCallback()!=null)
+						GoogleAchivements.getInstance().getAchivementCallback().AchivementSteps(achivement,achivement.getCurrentSteps()-cur);
 				}
 			}
 			

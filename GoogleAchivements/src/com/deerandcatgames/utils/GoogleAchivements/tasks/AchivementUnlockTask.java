@@ -33,7 +33,8 @@ public class AchivementUnlockTask extends AsyncTask<Void, Void, Void> {
 				boolean newlyUnlocked=obj2.getBoolean("newlyUnlocked");
 				if(newlyUnlocked)
 				{
-					GoogleAchivements.getInstance().getAchivementCallback().AchivementUnlocked(achivement);
+					if(GoogleAchivements.getInstance().getAchivementCallback()!=null)
+						GoogleAchivements.getInstance().getAchivementCallback().AchivementUnlocked(achivement);
 				}
 			}
 			
